@@ -35,3 +35,4 @@ pages = page_count.find_all('a') # Вытаскиваем ссылки на вс
     #links.append(page.find('a'))
 
 print(pages)
+.
