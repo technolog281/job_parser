@@ -31,6 +31,6 @@ page_count = hh_soup.find_all('span', {'class': 'pager-item-not-in-short-range'}
 links = []
 
 for page in page_count:
-    links.append(int(page.find('a').text))
+    links.append(int(page.find('a')))
 
 print(links[-1])
