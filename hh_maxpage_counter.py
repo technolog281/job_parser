@@ -3,7 +3,8 @@ from bs4 import BeautifulSoup
 
 url = 'https://kurgan.hh.ru/search/vacancy'
 params = {'text': 'python',
-          'items_on_page': 100
+          'items_on_page': 100,
+          'page': 0
           }  # Query Параметры запроса, упрощает URL и работу с ним
 
 session = requests.session()  # Функция автоматически генерирует cookies
@@ -39,7 +40,7 @@ def max_page_counter():
 
 def extract_hh_jobs(last_page):
     for page in range(last_page):
-        result = session.get(f'{url}&page={page}', headers=headers, params=params)
+        result = session.get(url, headers=headers, params=dict(params, page=page))
         print(result.status_code)
         #   Разбирает от 0 до max на отдельные значения и подставляет их в page=x
         #   (х = номер страницы с исчислением от 0)
