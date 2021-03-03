@@ -1,15 +1,14 @@
-def max_page_counter():
-    import requests
-    from bs4 import BeautifulSoup
+import requests
+from bs4 import BeautifulSoup
 
-    url = 'https://kurgan.hh.ru/search/vacancy'
-    params = {'text': 'python',
-              'items_on_page': 100
-              }  # Query Параметры запроса, упрощает URL и работу с ним
+url = 'https://kurgan.hh.ru/search/vacancy'
+params = {'text': 'python',
+          'items_on_page': 100
+          }  # Query Параметры запроса, упрощает URL и работу с ним
 
-    session = requests.session()  # Функция автоматически генерирует cookies
+session = requests.session()  # Функция автоматически генерирует cookies
 
-    headers = {
+headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,'
                   'application/signed-exchange;v=b3;q=0.9',
         'accept-encoding': 'gzip, deflate, br',
@@ -25,6 +24,7 @@ def max_page_counter():
     }  # Заголовки, вытаскиваются из запроса браузера к сайту
     # (для Chrome - F12 - Network - Headers - Request Headers)
 
+def max_page_counter():
     hh_req = session.get(url, headers=headers, params=params)  # Запрос к HH.RU страницы с вакансиями
 
     hh_soup = BeautifulSoup(hh_req.text, 'html.parser')  # Вытаскиваем HTML-разметку
@@ -35,4 +35,11 @@ def max_page_counter():
     for page in page_count:
         links.append(int(page.find('a').text))  # Тянем из всех ссылок текст и форматируем в integer
 
-    return links[-1]
+    return links[-1] # Вернули значение функции
+
+def extract_hh_jobs(last_page):
+    for page in range(last_page):
+        result = session.get(f'{url}&page={page}', headers=headers, params=params)
+        print(result.status_code)
+        #   Разбирает от 0 до max на отдельные значения и подставляет их в page=x
+        #   (х = номер страницы с исчислением от 0)
