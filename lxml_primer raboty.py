@@ -29,4 +29,5 @@ hh_req = session.get(url, headers=headers, params=params)
 parsed = html.fromstring(hh_req.text)
 
 print(parsed.xpath('//div[@data-qa="pager-block"]/span/span/a/@href'))
+
 # Эта хуета при помощи xpath и lxml вытаскивает данные из html, но на hh не работает
