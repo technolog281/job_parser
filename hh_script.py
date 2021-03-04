@@ -41,23 +41,24 @@ def max_page_counter():
     return links[-1]  # Вернули значение функции
 
 
-def extract_job(html):
+def extract_job(html):  # Собирает все спарсенные куски в словарь
     jobs_title = html.find('a').text
-    company_name = html.find('div', {'class': 'vacancy-serp-item__meta-info-company'}).find('a').text
-    company_name = company_name.strip()
-    return {'job_title': jobs_title, 'company_name': company_name}
+    link = html.find('a')['href']
+    company_name = html.find('div', {'class': 'vacancy-serp-item__meta-info-company'}).text
+    company_name = company_name.strip()  # Strip - удаляет символы в начале и в конце строки
+    job_city = html.find('span', {'data-qa': 'vacancy-serp__vacancy-address'}).text
+    job_city = job_city.partition(',')[0]
+    return {'job_title': jobs_title, 'company_name': company_name, 'location': job_city, 'link': link}
 
 
 def extract_hh_jobs(last_page):
     jobs_title = []
-    #for page in range(last_page):
-    result = session.get(url, headers=headers, params=dict(params, page=0))
-    # print(result.status_code)
-    soup = BeautifulSoup(result.text, 'html.parser')
-    results = soup.find_all('div', {'class': 'vacancy-serp-item'})
-    for result in results:
-        vacancy = extract_job(result)
-        jobs_title.append(vacancy)
+    for page in range(last_page):
+        print(f'Парсинг страницы {page}')
+        result = session.get(url, headers=headers, params=dict(params, page=page))
+        soup = BeautifulSoup(result.text, 'html.parser')
+        results = soup.find_all('div', {'class': 'vacancy-serp-item'})
+        for result in results:
+            vacancy = extract_job(result)
+            jobs_title.append(vacancy)
     return jobs_title
-
-
