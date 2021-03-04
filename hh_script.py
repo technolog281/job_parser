@@ -40,11 +40,13 @@ def max_page_counter():
 
     return links[-1]  # Вернули значение функции
 
+
 def extract_job(html):
     jobs_title = html.find('a').text
     company_name = html.find('div', {'class': 'vacancy-serp-item__meta-info-company'}).find('a').text
     company_name = company_name.strip()
     return {'job_title': jobs_title, 'company_name': company_name}
+
 
 def extract_hh_jobs(last_page):
     jobs_title = []

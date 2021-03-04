@@ -1,4 +1,4 @@
-from hh_maxpage_counter import max_page_counter, extract_hh_jobs
+from hh_script import max_page_counter, extract_hh_jobs
 
 max_page = max_page_counter()
 
