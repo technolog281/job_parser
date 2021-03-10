@@ -37,22 +37,23 @@ def max_page_counter():
 
 
 def extract_job(html):  # Собирает все спарсенные куски в словарь
-    job_title = html.find('a', {'class': 's-link stretched-link'})
+    job_title = html.find('a', {'class': 's-link stretched-link'}).text
+#   job_title = job_title_group.find('a', {'class': 's-link stretched-link'}).text
 #   link = html.find('a')['href']
 #   company_name = html.find('h3', {'class': 'fc-black-700 fs-body1 mb4'})
 #   company_name = company_name.strip()  # Strip - удаляет символы в начале и в конце строки
 #   job_city = html.find('span', {'span': 'fc-black-500'})
 #   job_city = job_city.partition(',')[0]
-    return job_title
+    return {'job_title': job_title}
 
 
 def extract_hh_jobs(last_page):
     jobs_title = []
-    for page in range(1):
+    for page in range(35):
         print(f'Парсинг страницы {page}')
         result = session.get(url, headers=headers, params=dict(params, pg=1))
         soup = BeautifulSoup(result.text, 'html.parser')
-        results = soup.find_all('div', {'class': 'grid'})
+        results = soup.find_all('div', {'class': 'listResults'})
         for result in results:
             vacancy = extract_job(result)
             jobs_title.append(vacancy)
