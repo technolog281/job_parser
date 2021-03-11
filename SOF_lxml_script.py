@@ -28,5 +28,5 @@ print(sof_req.status_code)
 
 parsed_page = html.fromstring(sof_req.text)
 
-print(parsed_page.xpath('.//div[@class="grid"]/div/h2/a'))
-
+print(parsed_page.xpath('.//div[@class="grid"]/div/h2/a/text()'))
+# Рабочий вариант парса текста из ссылок - берём путь XPath и сокращаем до нужных блоков, пихаем сюда
