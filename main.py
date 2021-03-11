@@ -19,3 +19,4 @@ result = extract_hh_jobs(max_page)
 
 print(len(listmerge(result)))
 
+

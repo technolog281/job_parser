@@ -49,6 +49,7 @@ def extract_hh_jobs(last_page):
     return jobs_title
 
 
+
 def listmerge(lstst):
     all = []
     for lst in lstst:
