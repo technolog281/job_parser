@@ -1,11 +1,12 @@
 import requests
-import pandas
 from lxml import html
 
 sof_url = 'https://stackoverflow.com/jobs'
-params = {'q': 'python',
-          'l': ''
-          }
+params = {
+    'q': 'python',
+    'l': ''
+        }
+
 headers = {
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,'
               'application/signed-exchange;v=b3;q=0.9',
@@ -24,7 +25,7 @@ headers = {
 session = requests.session()
 
 
-def max_page_counter():
+def max_page_counter(params):
     sof_req = session.get(sof_url, params=params, headers=headers)
     parsed_page = html.fromstring(sof_req.text)
     page_count = parsed_page.xpath('.//div[@class="s-pagination"]/a/span/text()')
@@ -41,13 +42,12 @@ def extract_hh_jobs(last_page):
     jobs_title = []
     for page in range(last_page):
         print(f'Парсинг страницы {page}')
-        result = session.get(sof_url, headers=headers, params=dict(params, pg=page+1))
+        result = session.get(sof_url, headers=headers, params=dict(params, pg=page + 1))
         results = html.fromstring(result.text)
         for result in results:
             list_of_lists = extract_job(result)
             jobs_title.append(list_of_lists)
     return jobs_title
-
 
 
 def listmerge(lstst):
