@@ -1,10 +1,10 @@
 import requests
+import pandas
 from lxml import html
 
 sof_url = 'https://stackoverflow.com/jobs'
 params = {'q': 'python',
-          'l': '',
-          'pg': 1
+          'l': ''
           }
 headers = {
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,'
@@ -22,11 +22,35 @@ headers = {
 }
 
 session = requests.session()
-sof_req = session.get(sof_url, params=params, headers=headers)
 
-print(sof_req.status_code)
 
-parsed_page = html.fromstring(sof_req.text)
+def max_page_counter():
+    sof_req = session.get(sof_url, params=params, headers=headers)
+    parsed_page = html.fromstring(sof_req.text)
+    page_count = parsed_page.xpath('.//div[@class="s-pagination"]/a/span/text()')
+    return int(page_count[-2])
 
-print(parsed_page.xpath('.//div[@class="grid"]/div/h2/a/text()'))
-# Рабочий вариант парса текста из ссылок - берём путь XPath и сокращаем до нужных блоков, пихаем сюда
+
+def extract_job(parse_html):
+    jobs_title = parse_html.xpath('.//div[@class="grid"]/div/h2/a/text()')
+
+    return jobs_title
+
+
+def extract_hh_jobs(last_page):
+    jobs_title = []
+    for page in range(last_page):
+        print(f'Парсинг страницы {page}')
+        result = session.get(sof_url, headers=headers, params=dict(params, pg=page+1))
+        results = html.fromstring(result.text)
+        for result in results:
+            list_of_lists = extract_job(result)
+            jobs_title.append(list_of_lists)
+    return jobs_title
+
+
+def listmerge(lstst):
+    all = []
+    for lst in lstst:
+        all.extend(lst)
+    return all
