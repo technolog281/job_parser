@@ -58,4 +58,3 @@
 #             vacancy = extract_job(result)
 #             jobs_title.append(vacancy)
 #     return jobs_title
-,,
