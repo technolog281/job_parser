@@ -1,4 +1,4 @@
-from search_count import search_count
+from search_count_v2 import search_count
 
 city = ''
 search_text = 'python'
