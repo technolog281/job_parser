@@ -35,8 +35,3 @@ def search_count(city: str, search_text: str) -> str:
         return full_res
 
     return int(jobs_counter((params)))
-
-# res = search_count(city='',search_text='')
-# result = re.findall('([0-9]+)', res)
-# full_res = ''.join(result)
-# print(full_res)
