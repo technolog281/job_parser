@@ -25,13 +25,9 @@ def search_count(city: str, search_text: str) -> str:
         'q': search_text,
         'l': city
     }
-
-    def jobs_counter(params):
-        sof_req = session.get(sof_url, params=params, headers=headers)
-        parsed_page = html.fromstring(sof_req.text)
-        page_count_list = parsed_page.xpath('.//div[@class="grid--cell js-search-title -header seo-header"]/span/text()')
-        result = re.findall('([0-9]+)', str(page_count_list))
-        full_res = ''.join(result)
-        return full_res
-
-    return int(jobs_counter((params)))
+    sof_req = session.get(sof_url, params=params, headers=headers)
+    parsed_page = html.fromstring(sof_req.text)
+    page_count_list = parsed_page.xpath('.//div[@class="grid--cell js-search-title -header seo-header"]/span/text()')
+    result = re.findall('([0-9]+)', str(page_count_list))
+    full_res = ''.join(result)
+    return int(full_res)
